@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Weather App Project JavaScript</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <h1>Weather Dashboard</h1>
+    <div class="container">
+        <div class="left-container">
+            <div class="weather-input">
+                <h3>Enter a City Name</h3>
+                <input class="city-input" type="text" placeholder="E.g., New York, London">
+                <button class="search-btn">Search</button>
+                <div class="separator"></div>
+                <button class="location-btn">Use Current Location</button>
+            </div>
+            <div class="email-input">
+                <h3>Enter Email</h3>
+                <form id="subscribeForm">
+                    <input type="email" name="email" id="email" placeholder="Enter your email" required>
+                    <button type="submit" id="subscribeBtn">Subscribe</button>
+                </form>
+                <div class="separator"></div>
+                <button class="unsubscribe-btn">Unsubscribe</button>
+            </div>
+            <div class="verification-input">
+                <h3>Enter Verification Code</h3>
+                <form id="verifyForm">
+                    <input type="email" name="email" id="verifyEmail" class="email-field" placeholder="Enter your email" required>
+                    <input type="text" name="verification_code" id="verificationCode" class="verification-code" placeholder="Enter verification code" required>
+                    <button type="submit" id="verifyBtn">Verify Code</button>
+                </form>
+            </div>
+        </div>
+        <div class="weather-data">
+            <div class="current-weather">
+                <div class="details">
+                    <h2>_______ ( ______ )</h2>
+                    <h6>Temperature: __°C</h6>
+                    <h6>Wind: __ M/S</h6>
+                    <h6>Humidity: __%</h6>
+                </div>
+            </div>
+            <div class="days-forecast">
+                <h2>3-Day Forecast</h2>
+                <ul class="weather-cards">
+                    <li class="card">
+                        <h3>( ______ )</h3>
+                        <h6>Temp: __C</h6>
+                        <h6>Wind: __ M/S</h6>
+                        <h6>Humidity: __%</h6>
+                    </li>
+                    <li class="card">
+                        <h3>( ______ )</h3>
+                        <h6>Temp: __C</h6>
+                        <h6>Wind: __ M/S</h6>
+                        <h6>Humidity: __%</h6>
+                    </li>
+                    <li class="card">
+                        <h3>( ______ )</h3>
+                        <h6>Temp: __C</h6>
+                        <h6>Wind: __ M/S</h6>
+                        <h6>Humidity: __%</h6>
+                    </li>
+                </ul>
+            </div>
+            <div class="history-button-container">
+                <button class="history-btn" onclick="location.href='history.html'">See History</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function removeNotification() {
+                const notifications = document.querySelectorAll('.alert');
+                notifications.forEach(notification => {
+                    notification.remove();
+                });
+            }
+
+            function displayNotification(data) {
+                document.body.insertAdjacentHTML('beforeend', data);
+                setTimeout(removeNotification, 5000); // Remove the notification after 5 seconds
+            }
+
+            document.getElementById('subscribeForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const email = document.getElementById('email').value;
+                fetch('send-verification-email.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'email=' + encodeURIComponent(email),
+                })
+                .then(response => response.text())
+                .then(data => {
+                    displayNotification(data); // Display and auto-remove the notification
+                })
+                .catch(error => {
+                    console.error('Error sending verification email:', error);
+                    alert('Error sending verification email.');
+                });
+            });
+
+            document.getElementById('verifyForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const email = document.getElementById('verifyEmail').value;
+                const code = document.getElementById('verificationCode').value;
+                fetch('verify-code.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'email=' + encodeURIComponent(email) + '&verification_code=' + encodeURIComponent(code),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                })
+                .catch(error => {
+                    console.error('Error verifying code:', error);
+                    alert('Error verifying code.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
