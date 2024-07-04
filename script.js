@@ -10,7 +10,7 @@ const emailField = document.querySelector(".email-field");
 const subscribeButton = document.querySelector(".subscribe-btn");
 const unsubscribeButton = document.querySelector(".unsubscribe-btn");
 
-const API_KEY = "8d35a236a852479396060912240207"; // Replace with your API key
+const API_KEY = "REPLACE_WITH_YOUR API_KEY"; 
 
 const createWeatherCard = (cityName, weatherItem, index) => {
     if (index === 0) { // HTML for the main weather card

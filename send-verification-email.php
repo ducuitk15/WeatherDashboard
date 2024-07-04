@@ -29,10 +29,9 @@ $mail = new PHPMailer(true);
 try {
     // Cài đặt máy chủ
     $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com'; // Thiết lập máy chủ SMTP
-    $mail->SMTPAuth   = true;
-    $mail->Username   = 'ducyt0607@gmail.com'; // Thay bằng địa chỉ email của bạn
-    $mail->Password   = 'znrr eckj nzpk dmuj'; // Thay bằng mật khẩu ứng dụng của bạn
+    $mail->Host       = 'smtp.gmail.com'; 
+    $mail->Username   = 'ducyt0607@gmail.com'; 
+    $mail->Password   = 'REPLACE_WITH_YOUR_APP_PASSWORD'; 
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
